@@ -1,5 +1,24 @@
 function entryCalculator(entrants) {
   // your code here
+  const prices = {
+    Adult: 49.99,
+    Child: 20.99,
+    Senior: 24.99
+  };
+    
+  if(!entrants || Object.keys(entrants).length === 0){
+    return 0;
+
+  }else{
+    const keyValues = Object.entries(entrants);
+    const total = keyValues
+    .map(([key, amount]) => {
+      return prices.hasOwnProperty(key) ? prices[key] * amount : 0;
+  })
+    .reduce((acc, prices) => acc + prices, 0);
+
+    return total;
+  }
 }
 
 function schedule(dayName) {
