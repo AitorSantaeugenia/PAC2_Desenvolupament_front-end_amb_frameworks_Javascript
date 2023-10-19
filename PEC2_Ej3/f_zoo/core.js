@@ -57,7 +57,22 @@ function schedule(dayName) {
 
 function animalCount(species) {
   // your code here
-  console.log(species)
+  const dataAnimals = data.animals;
+  
+  const animalCounts = dataAnimals.map(animal => ({
+    name: animal.name,
+    count: animal.residents.length,
+  }));
+
+ if (!species) {
+    return animalCounts.reduce((count, animal) => {
+      count[animal.name] = animal.count;
+      return count;
+    }, {});
+ } else {
+    const animal = animalCounts.find(animal => animal.name === species);
+    return animal ? animal.count : 0;
+ }
 }
 
 function animalMap(options) {
