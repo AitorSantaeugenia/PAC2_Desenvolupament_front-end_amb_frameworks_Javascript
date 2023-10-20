@@ -148,10 +148,31 @@ function animalPopularity(rating) {
 
 function animalsByIds(ids) {
   // your code here
+  const animals = data.animals;
+  if(!ids){
+    return [];
+  }else {
+    const animalById = animals.filter(animal => ids.includes(animal.id));
+
+    return animalById;
+  }
 }
 
 function animalByName(animalName) {
   // your code here
+  const animals = data.animals;
+
+  const matchingAnimal = animals
+    .map(animal => animal.residents.find(resident => resident.name === animalName))
+    .filter(resident => resident)
+    .map(resident => ({
+      name: resident.name,
+      sex: resident.sex,
+      age: resident.age,
+      species: animals.find(animal => animal.residents.includes(resident)).name,
+    }))[0];
+
+  return matchingAnimal || {};
 }
 
 function employeesByIds(ids) {
