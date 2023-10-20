@@ -189,14 +189,85 @@ function employeesByIds(ids) {
 
 function employeeByName(employeeName) {
   // your code here
+  const employees = data.employees;
+  const employeeProp = employees.some(employee => employee.firstName === employeeName) ? "firstName" : employees.some(employee => employee.lastName === employeeName) ? "lastName" : null;
+   
+  const employee = employees.find(employee => employee[employeeProp] === employeeName);
+     
+   if(!employeeName){
+     return {};
+   }else {
+     return employee;
+   }
 }
 
 function managersForEmployee(idOrName) {
   // your code here
+  const employees = data.employees;
+  
+  const employeeProp = employees.some(employee => employee.firstName === idOrName) ? "firstName" : employees.some(employee => employee.lastName === idOrName) ? "lastName" : employees.some(employee => employee.id === idOrName) ? "id" : null;
+  const employee = employees.find(employee => employee[employeeProp] === idOrName);
+  
+  const managerNames = employee.managers.map(managerId => {
+    const manager = employees.find(manager => manager.id === managerId);
+    return `${manager.firstName} ${manager.lastName}`;
+  })
+     
+  const result = {
+    id: employee.id,
+    firstName: employee.firstName,
+    lastName: employee.lastName,
+    managers: managerNames,
+    responsibleFor: employee.responsibleFor,
+  };
+    
+  return result;
 }
 
 function employeeCoverage(idOrName) {
   // your code here
+  const employees = data.employees;
+  const animals = data.animals;
+  
+  if(!idOrName){
+    const employeeMap = {};
+  
+    employees.forEach(employee => {
+      const employeeName = `${employee.firstName} ${employee.lastName}`;
+      employeeMap[employeeName] = [];
+
+      employee.responsibleFor.forEach(animalId => {
+        const animal = animals.find(animal => animal.id === animalId);
+        employeeMap[employeeName].push(animal.name);
+      });
+    });
+
+    return employeeMap;
+  }else {
+    const employee = employees.find(employee => {
+      return (
+        employee.id === idOrName ||
+        employee.firstName === idOrName ||
+        employee.lastName === idOrName
+      );
+    });
+    
+    if (!employee) {
+      return null;
+    }
+    
+    const employeeName = `${employee.firstName} ${employee.lastName}`;
+    const responsibleFor = employee.responsibleFor.map(animalId => {
+      const animal = animals.find(animal => animal.id === animalId);
+      return animal.name;
+    });
+  
+    const result = {
+      [employeeName]: responsibleFor,
+    };
+  
+    return result;
+  }
 }
 
 module.exports = {
