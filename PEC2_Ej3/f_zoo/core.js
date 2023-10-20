@@ -177,6 +177,14 @@ function animalByName(animalName) {
 
 function employeesByIds(ids) {
   // your code here
+  const employees = data.employees;
+  if(!ids){
+    return [];
+  }else {
+    const employeesById = employees.filter(employee => ids.includes(employee.id));
+
+    return employeesById;
+  }
 }
 
 function employeeByName(employeeName) {
