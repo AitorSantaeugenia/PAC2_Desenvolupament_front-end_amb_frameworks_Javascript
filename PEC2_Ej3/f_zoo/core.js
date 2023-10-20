@@ -77,10 +77,73 @@ function animalCount(species) {
 
 function animalMap(options) {
   // your code here
+  const animals = data.animals;
+
+  if (!options) {
+    return animals.reduce((acc, animal) => {
+      if (!acc[animal.location]) {
+        acc[animal.location] = [];
+      }
+      acc[animal.location].push(animal.name);
+      return acc;
+    }, {});
+  } else {
+    const locationMap = {};
+
+    animals.forEach((animal) => {
+      if (!locationMap[animal.location]) {
+        locationMap[animal.location] = [];
+      }
+
+      const animalType = animal.name;
+      const residents = animal.residents.filter((resident) => {
+        return !options.sex || resident.sex === options.sex;
+      }).map((resident) => resident.name);
+
+      if (residents.length >= 0) {
+        if (options.includeNames) {
+          locationMap[animal.location].push({ [animalType]: residents });
+        } else if (!options.sex || residents.length > 0) {
+          locationMap[animal.location].push(animalType);
+        }
+      }
+    });
+
+    return locationMap;
+  }
 }
 
 function animalPopularity(rating) {
   // your code here
+  const ratingMap = {};
+
+  if(!rating){
+    data.animals.forEach((animal) => {
+    const { name, popularity } = animal;
+
+      if (!ratingMap[popularity]) {
+        ratingMap[popularity] = [];
+      }
+
+    ratingMap[popularity].push(name);
+  });
+
+  const sortedRatingMap = Object.keys(ratingMap)
+  .sort((a, b) => b - a)
+  .reduce((acc, key) => {
+    acc[key] = ratingMap[key];
+    return acc;
+  }, {});
+
+  return sortedRatingMap;
+
+  }else{
+    const animalMatch = data.animals
+    .filter((animal) => animal.popularity === rating)
+    .map((animal) => animal.name);
+
+    return animalMatch.length ? animalMatch : null;
+  }
 }
 
 function animalsByIds(ids) {
