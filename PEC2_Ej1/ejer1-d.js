@@ -9,7 +9,7 @@ const findOne = (list, { key, value }) => {
         if (element) {
           resolve(element);
         } else {
-          throw new Error('Error: Element Not Found');
+          throw new Error('ERROR: Element Not Found');
         }
       } catch (error) {
         reject(error);
@@ -40,6 +40,7 @@ const errorPromise = findOne(users, { key: 'name', value: 'Fermin' })
  .catch(error => error.message);
 
 //Amb el Promise.all executarem totes les promeses, al mateix temps que els missatges de consola
+//el motiu es per fer-ho tot de cop, ja que Promise.all s'executará quan totes les promeses que té finalitzin
 Promise.all([successPromise, errorPromise])
   .then(([successMessage, errorMessage]) => {
       console.log('findOne success');
