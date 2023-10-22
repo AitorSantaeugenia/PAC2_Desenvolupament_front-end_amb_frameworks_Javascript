@@ -7,11 +7,35 @@
  * @param view
  */
 class ExpenseController {
-    constructor() {
+    constructor(service, view) {
+        this.service = service;
+        this.view = view;
+    
+        // Explicit this binding
+        this.service.bindExpenseListChanged(this.onExpenseListChanged);
+        this.view.bindAddExpense(this.handleAddExpense);
+        this.view.bindDeleteExpense(this.handleDeleteExpense);
+        this.view.bindEditExpense(this.handleEditExpense);
+    
+        // Display initial todos
+        this.onExpenseListChanged(this.service.expenses);
+      }
 
-    }
-  
-    //Mètodes
+      //Mètodes
+      onExpenseListChanged = expenses => {
+        this.view.displayExpenses(expenses);
+      };
+    
+      handleAddExpense = (expenseText, expenseQuant) => {
+        this.service.addExpense(expenseText, expenseQuant);
+      };
+    
+      handleDeleteExpense = id => {
+        this.service.deleteExpense(id);
+      };
 
+      handleEditExpense = (id, amount) => {
+        this.service.editExpense(id, amount);
+      };
   }
   
