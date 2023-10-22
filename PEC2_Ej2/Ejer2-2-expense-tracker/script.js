@@ -47,9 +47,11 @@ function addTransaction(e) {
 }
 
 // Generate random ID
+/*
 function generateID() {
   return Math.floor(Math.random() * 100000000);
 }
+*/
 
 // Add transactions to DOM list
 function addTransactionDOM(transaction) {
